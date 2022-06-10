@@ -1,15 +1,26 @@
 import React from 'react';
-import { Heading, Text, Button, Box } from '@chakra-ui/react';
+import { Heading, Text, Flex } from '@chakra-ui/react';
 
 import DashboardShell from './DashboardShell';
+import AddSiteModal from './AddSiteModal';
 
 const EmptyState = () => (
   <DashboardShell>
-    <Box width="100%" backgroundColor="white" borderRadius="8px" p={8}>
-      <Heading size="md">You havent added any sites</Heading>
-      <Text>Welcome 🖐 Lets get started</Text>
-      <Button>Add Your First Site</Button>
-    </Box>
+    <Flex
+      width="100%"
+      backgroundColor="white"
+      borderRadius="8px"
+      p={16}
+      justify="center"
+      align="center"
+      direction="column"
+    >
+      <Heading size="lg" mb={2}>
+        You havent added any sites
+      </Heading>
+      <Text mb={4}>Welcome 🖐 Lets get started</Text>
+      <AddSiteModal />
+    </Flex>
   </DashboardShell>
 );
 
