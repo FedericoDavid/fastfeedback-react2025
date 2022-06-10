@@ -12,43 +12,46 @@ import {
 } from '@chakra-ui/react';
 
 import { defaultLogo } from '@/styles/icons';
+import { useAuth } from '@/lib/auth';
 
-const DashboardShell = ({ children }) => (
-  <Flex flexDirection="column">
-    <Flex
-      backgroundColor="white"
-      alignItems="center"
-      justifyContent="space-between"
-      p={4}
-    >
-      <Stack isInline spacing={4}>
-        <Icon as={defaultLogo} color="black" />
-        <Link>Feedback</Link>
-        <Link>Sites</Link>
-      </Stack>
-      <Flex alignItems="center">
-        <Link mr={4}>Account</Link>
-        <Avatar size="sm" />
-      </Flex>
-    </Flex>
-    <Flex backgroundColor="gray.100" p={8} height="100%">
+const DashboardShell = ({ children }) => {
+  const auth = useAuth();
+
+  return (
+    <Flex flexDirection="column">
       <Flex
-        maxWidth="800px"
-        justifyContent="center"
+        backgroundColor="white"
         alignItems="center"
-        ml="auto"
-        mr="auto"
+        justifyContent="space-between"
+        py={4}
+        px={8}
       >
-        <Breadcrumb>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink color="black">Sites</BreadcrumbLink>
-          </BreadcrumbItem>
-          <Heading color="black">Sites</Heading>
+        <Stack isInline spacing={4} align="center">
+          <Icon as={defaultLogo} color="black" w={6} h={6} />
+          <Link>Feedback</Link>
+          <Link>Sites</Link>
+        </Stack>
+        <Flex alignItems="center">
+          <Link mr={4}>Account</Link>
+          <Avatar size="sm" src={auth.user.photoUrl} />
+        </Flex>
+      </Flex>
+      <Flex backgroundColor="gray.100" p={8} height="100vh">
+        <Flex maxWidth="800px" w="100%" ml="auto" mr="auto" direction="column">
+          <Breadcrumb>
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink color="gray.700" fontSize="sm">
+                Sites
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+          <Heading color="black" mb={4}>
+            Sites
+          </Heading>
           {children}
-        </Breadcrumb>
+        </Flex>
       </Flex>
     </Flex>
-  </Flex>
-);
-
+  );
+};
 export default DashboardShell;
