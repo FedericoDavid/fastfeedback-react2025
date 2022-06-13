@@ -23,15 +23,16 @@ const AddSiteModal = () => {
   const initialRef = useRef();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, reset } = useForm();
   const toast = useToast();
   const auth = useAuth();
 
-  const onCreateSite = (values) => {
+  const onCreateSite = ({ name, url }) => {
     createSite({
       authorId: auth.user.uid,
       createdAt: new Date().toISOString(),
-      ...values,
+      name,
+      url,
     });
 
     toast({
@@ -42,6 +43,7 @@ const AddSiteModal = () => {
       isClosable: true,
     });
 
+    reset();
     onClose();
   };
 
@@ -59,8 +61,9 @@ const AddSiteModal = () => {
             <FormControl>
               <FormLabel>Name</FormLabel>
               <Input
+                autoFocus
                 placeholder="My site"
-                {...register('site', { required: 'Required' })}
+                {...register('name', { required: 'Required' })}
               />
             </FormControl>
 

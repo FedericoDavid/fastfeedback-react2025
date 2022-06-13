@@ -18,7 +18,7 @@ const SkeletonRow = ({ width }) => (
   </Box>
 );
 
-const SiteTableSkeleton = ({ sites }) => (
+const SiteTableSkeleton = () => (
   <Table>
     <thead>
       <Tr>
