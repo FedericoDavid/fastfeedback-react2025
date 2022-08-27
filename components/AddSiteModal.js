@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSWRConfig } from 'swr';
 import {
   Modal,
   ModalOverlay,
@@ -19,21 +20,30 @@ import {
 import { createSite } from '@/lib/db';
 import { useAuth } from '@/lib/auth';
 
-const AddSiteModal = () => {
+const AddSiteModal = ({ children }) => {
   const initialRef = useRef();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { handleSubmit, register, reset } = useForm();
+  const { isOpen, onOpen, onClose, reset } = useDisclosure();
+  const { handleSubmit, register } = useForm();
+  const { mutate } = useSWRConfig();
+
   const toast = useToast();
   const auth = useAuth();
 
+  const onCancel = () => {
+    onClose();
+    reset();
+  };
+
   const onCreateSite = ({ name, url }) => {
-    createSite({
+    const newSite = {
       authorId: auth.user.uid,
       createdAt: new Date().toISOString(),
       name,
       url,
-    });
+    };
+
+    createSite(newSite);
 
     toast({
       title: 'Success!',
@@ -43,14 +53,28 @@ const AddSiteModal = () => {
       isClosable: true,
     });
 
-    reset();
+    mutate(
+      'api/sites',
+      async (data) => {
+        return { sites: [...data.sites, newSite] };
+      },
+      false,
+    );
+
     onClose();
   };
 
   return (
     <>
-      <Button fontWeight="medium" maxW="200px" onClick={onOpen}>
-        Add Your First Site
+      <Button
+        onClick={onOpen}
+        backgroundColor="gray.900"
+        color="white"
+        fontWeight="medium"
+        _hover={{ bg: 'gray.700' }}
+        _active={{ bg: 'gray.800', transform: 'scale(0.95)' }}
+      >
+        {children}
       </Button>
       <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -77,7 +101,7 @@ const AddSiteModal = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={onClose} mr={3} fontWeight="medium">
+            <Button onClick={onCancel} mr={3} fontWeight="medium">
               Cancel
             </Button>
             <Button colorScheme="purple" fontWeight="medium" type="submit">

@@ -12,6 +12,8 @@ import {
   Box,
 } from '@chakra-ui/react';
 
+import AddSiteModal from './AddSiteModal';
+
 import { defaultLogo } from '@/styles/icons';
 import { useAuth } from '@/lib/auth';
 
@@ -54,14 +56,7 @@ const DashboardShell = ({ children }) => {
         </Breadcrumb>
         <Flex justifyContent="space-between">
           <Heading mb={8}>My Sites</Heading>
-          <Button
-            backgroundColor="gray.900"
-            color="white"
-            fontWeight="medium"
-            _hover={{ bg: 'gray.700' }}
-          >
-            + Add Site
-          </Button>
+          <AddSiteModal>+ Add Site</AddSiteModal>
         </Flex>
         {children}
       </Flex>
