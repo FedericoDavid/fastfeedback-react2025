@@ -21,7 +21,7 @@ const DashboardShell = ({ children }) => {
   const { user, signout } = useAuth();
 
   return (
-    <Box backgroundColor="gray.100" h="100vh">
+    <Box backgroundColor="gray.100" h="full">
       <Flex backgroundColor="white" mb={16} w="full">
         <Flex
           alignItems="center"
