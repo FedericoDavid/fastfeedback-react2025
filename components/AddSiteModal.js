@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSWRConfig } from 'swr';
+import { mutate } from 'swr';
 import {
   Modal,
   ModalOverlay,
@@ -25,7 +25,6 @@ const AddSiteModal = ({ children }) => {
 
   const { isOpen, onOpen, onClose, reset } = useDisclosure();
   const { handleSubmit, register } = useForm();
-  const { mutate } = useSWRConfig();
 
   const toast = useToast();
   const auth = useAuth();
@@ -54,7 +53,7 @@ const AddSiteModal = ({ children }) => {
     });
 
     mutate(
-      'api/sites',
+      ['/api/sites', auth.user.token],
       async (data) => {
         return { sites: [...data.sites, newSite] };
       },
